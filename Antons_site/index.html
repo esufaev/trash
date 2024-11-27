@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Подбор настольных игр</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<header>
+			<h1>Подбор настольных игр</h1>
+			<button class="login-button" onclick="login()">Войти</button>
+		</header>
+
+		<div class="container">
+			<h2>Выберите параметры игры</h2>
+
+			<label for="playerCount">Количество игроков:</label>
+			<select id="playerCount">
+				<option value="2">2 игрока</option>
+				<option value="3">3 игрока</option>
+				<option value="4">4 игрока</option>
+				<option value="5">5 и более игроков</option>
+			</select>
+
+			<label for="gameType">Тип игры:</label>
+			<select id="gameType">
+				<option value="party">Вечеринка</option>
+				<option value="strategy">Стратегия</option>
+				<option value="family">Семейные</option>
+				<option value="cooperative">Кооперативные</option>
+			</select>
+
+			<button class="find-button" onclick="findGames()">Подобрать игры</button>
+
+			<label for="searchBar">Поиск игры:</label>
+			<input
+				type="text"
+				id="searchBar"
+				placeholder="Введите название игры"
+				oninput="searchGames()"
+			/>
+
+			<h2>Рекомендуемые игры:</h2>
+			<ul class="games-list" id="gamesList"></ul>
+		</div>
+
+		<div class="modal" id="gameModal" onclick="closeModal()">
+			<div class="modal-content" onclick="event.stopPropagation()">
+				<span class="close" onclick="closeModal()">&times;</span>
+				<h2 id="gameTitle"></h2>
+				<p id="gameDescription"></p>
+			</div>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>
