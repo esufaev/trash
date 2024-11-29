@@ -4,7 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Подбор настольных игр</title>
-		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="css/general.css" />
+		<link rel="stylesheet" href="css/games.css" />
+		<link rel="stylesheet" href="css/auth.css" />
+
 	</head>
 	<body>
 		<header>
@@ -50,6 +53,25 @@
 				<span class="close" onclick="closeModal()">&times;</span>
 				<h2 id="gameTitle"></h2>
 				<p id="gameDescription"></p>
+			</div>
+		</div>
+
+		<div class="modal" id="authModal" onclick="closeAuthModal()">
+			<div class="modal-content" onclick="event.stopPropagation()">
+				<span class="close" onclick="closeAuthModal()">&times;</span>
+				<h2 id="authTitle">Вход</h2>
+				<form id="authForm" onsubmit="submitAuthForm(event)">
+					<label for="username">Имя пользователя:</label>
+					<input type="text" id="username" required />
+
+					<label for="password">Пароль:</label>
+					<input type="password" id="password" required />
+
+					<button type="submit" id="authSubmitButton">Войти</button>
+					<p id="toggleAuth" onclick="toggleAuthMode()">
+						Нет аккаунта? Зарегистрируйтесь
+					</p>
+				</form>
 			</div>
 		</div>
 
