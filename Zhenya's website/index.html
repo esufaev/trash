@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Рекомендательная система по подбору игр</title>
+		<link rel="stylesheet" href="css/base.css" />
+		<link rel="stylesheet" href="css/layout.css" />
+		<link rel="stylesheet" href="css/buttons.css" />
+		<link rel="stylesheet" href="css/modal.css" />
+		<link rel="stylesheet" href="css/game.css" />
+		<link rel="stylesheet" href="css/filter.css" />
+		<link rel="stylesheet" href="css/alerts.css" />
+		<link rel="stylesheet" href="css/game_modal.css" />
+		<link rel="stylesheet" href="css/add.css" />
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<h1>Подбор компьютерных игр</h1>
+				<div class="auth-container">
+					<button
+						id="authButton"
+						class="auth-button"
+						onclick="toggleAuthModal()"
+					>
+						Войти / Зарегистрироваться
+					</button>
+					<div id="userDisplay" class="user-display" style="display: none">
+						<span id="usernameDisplay"></span>
+					</div>
+					<button
+						id="logoutButton"
+						class="logout-button"
+						onclick="logout()"
+						style="display: none"
+					>
+						Выйти
+					</button>
+				</div>
+			</header>
+
+			<div id="gameModal" class="modal">
+				<div class="modal-content">
+					<span class="close-btn" onclick="toggleGameModal(false)"
+						>&times;</span
+					>
+					<h2 id="gameTitle"></h2>
+					<img id="gameImage" src="" alt="Game image" class="game-image" />
+					<p id="gameDescription"></p>
+					<p id="gameGenre"></p>
+					<p id="gamePlatform"></p>
+					<p id="gameRating"></p>
+				</div>
+			</div>
+
+			<section class="filter-section">
+				<h2>Выберите параметры для подбора:</h2>
+				<div class="filter">
+					<div class="filter-top">
+						<label for="genre">Жанр:</label>
+						<select id="genre">
+							<option value="all">Все</option>
+							<option value="Action">Action</option>
+							<option value="Adventure">Adventure</option>
+							<option value="RPG">RPG</option>
+						</select>
+
+						<label for="platform">Платформа:</label>
+						<select id="platform">
+							<option value="all">Все</option>
+							<option value="PC">PC</option>
+							<option value="Console">Console</option>
+						</select>
+
+						<label for="rating">Рейтинг:</label>
+						<select id="rating">
+							<option value="all">Все</option>
+							<option value="6+">6+</option>
+							<option value="12+">12+</option>
+							<option value="16+">16+</option>
+							<option value="18+">18+</option>
+						</select>
+
+						<button class="recommend-button" onclick="recommendGames()">
+							Подобрать игру
+						</button>
+						<button class="favorite-toggle" onclick="toggleFavoritesOnly()">
+							Избранное
+						</button>
+					</div>
+					<div class="filter-bottom">
+						<label for="searchInput">Поиск игр:</label>
+						<input
+							type="text"
+							id="searchInput"
+							placeholder="Введите название игры"
+							oninput="searchGames()"
+						/>
+					</div>
+				</div>
+			</section>
+
+			<section id="recommendations" class="recommendations">
+				<h2>Рекомендуемые игры:</h2>
+				<div id="gameList" class="game-list"></div>
+			</section>
+		</div>
+
+		<div id="gameModal" class="modal">
+			<div class="modal-content game-modal-content">
+				<span class="close-btn" onclick="toggleGameModal(false)">&times;</span>
+				<h2 id="gameTitle"></h2>
+				<img id="gameImage" src="" alt="Game image" class="game-image" />
+				<img id="gameTrailer" src="" alt="Game trailer" class="game-trailer" />
+				<p id="gameDescription"></p>
+				<p id="gameGenre"></p>
+				<p id="gamePlatform"></p>
+				<p id="gameRating"></p>
+			</div>
+		</div>
+
+		<div id="authModal" class="modal">
+			<div class="modal-content">
+				<span class="close" onclick="toggleAuthModal()">&times;</span>
+				<h2 id="modalTitle">Войти</h2>
+				<div id="loginForm">
+					<label for="username">Имя пользователя:</label>
+					<input
+						type="text"
+						id="username"
+						placeholder="Введите имя пользователя"
+					/>
+					<label for="password">Пароль:</label>
+					<input type="password" id="password" placeholder="Введите пароль" />
+					<button onclick="login()">Войти</button>
+					<button onclick="toggleForm()">Зарегистрироваться</button>
+				</div>
+				<div id="registerForm" style="display: none">
+					<label for="username">Имя пользователя:</label>
+					<input
+						type="text"
+						id="regUsername"
+						placeholder="Введите имя пользователя"
+					/>
+					<label for="password">Пароль:</label>
+					<input
+						type="password"
+						id="regPassword"
+						placeholder="Введите пароль"
+					/>
+					<label for="confirmPassword">Подтвердите пароль:</label>
+					<input
+						type="password"
+						id="confirmPassword"
+						placeholder="Повторите пароль"
+					/>
+					<button onclick="register()">Зарегистрироваться</button>
+					<button onclick="toggleForm()">Войти</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="adContainer" class="ad-container">
+			<div id="adContent" class="ad-content">
+				<span class="close-ad" onclick="toggleAd(false)">&times;</span>
+				<p>Реклама:</p>
+				<a id="adLink" href="#" target="_blank">
+					<img id="adImage" alt="Реклама" />
+				</a>
+			</div>
+		</div>
+
+		<div id="alertContainer"></div>
+		<script src="script.js"></script>
+	</body>
+</html>

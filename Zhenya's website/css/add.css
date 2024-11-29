@@ -1,0 +1,60 @@
+:root {
+	--content-left-offset: calc((100% - 1100px) / 2 - 20px);
+}
+
+.ad-container {
+	position: fixed;
+	bottom: 20px;
+	left: 15px;
+	width: calc(var(--content-left-offset, 0px));
+	background-color: #f9f9f9;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	border-radius: 8px;
+	display: none;
+	overflow: hidden;
+}
+
+.ad-content {
+	padding: 10px;
+	text-align: center;
+	position: relative;
+}
+
+.ad-content img {
+	width: 100%;
+	height: auto;
+	border-radius: 5px;
+}
+
+.close-ad {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	font-size: 16px;
+	cursor: pointer;
+	color: #555;
+}
+
+.close-ad:hover {
+	color: #f00;
+}
+
+@keyframes bounce {
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateY(0);
+	}
+	40% {
+		transform: translateY(-45px);
+	}
+	60% {
+		transform: translateY(-15px);
+	}
+}
+
+.ad-container.bouncing {
+	animation: bounce 1s ease-in-out;
+}

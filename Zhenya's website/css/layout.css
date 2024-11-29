@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+  margin: 20px;
+  min-height: calc(100vh - 120px);
+}
+
+.auth-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: -33px;
+}

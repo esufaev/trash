@@ -1,0 +1,31 @@
+.auth-button,
+.logout-button {
+  padding: 8px 16px;
+  background-color: #005f73;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-button:hover,
+.logout-button:hover {
+  background-color: #007b9c;
+}
+
+.recommend-button {
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  min-width: 160px;
+  background-color: #34a853;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.recommend-button:hover {
+  background-color: #2c8c47;
+}

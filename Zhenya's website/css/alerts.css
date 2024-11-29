@@ -1,0 +1,28 @@
+#alertContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.alert {
+  margin-bottom: 10px;
+  padding: 16px; /* Увеличение размеров */
+  font-size: 16px; /* Увеличение шрифта */
+  background-color: #d93025;
+  color: #ffffff;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px; /* Увеличение ширины */
+  box-sizing: border-box;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.alert.success {
+  background-color: #34a853;
+}
+
+.alert.fade {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
