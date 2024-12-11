@@ -45,12 +45,21 @@ namespace pot
             using return_type = std::invoke_result_t<Func, Args...>;
             if constexpr (pot::traits::concepts::is_task<return_type>)
             {
-                auto task_result = func(std::forward<Args>(args)...);
+                auto task_result = std::invoke(func, args...);
+
+                auto handle = task_result.operator co_await().m_handle;
 
                 derived_execute([&]() mutable
-                                { task_result.get(); });
+                {
+                    if (handle && !handle.done() && !handle.promise().m_is_resuming.test_and_set(std::memory_order_acquire))
+                    {
+                        std::cout << "!!!!!!!!!!!!!!!!!!!!!!!(de)" << std::endl;
+                        handle.resume();
+                        handle.promise().m_is_resuming.clear(std::memory_order_release);
+                    } 
+                });
 
-                return task_result; 
+                return task_result;
             }
             else
             {

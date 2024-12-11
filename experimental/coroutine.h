@@ -78,20 +78,20 @@ namespace pot::tasks::details
             m_continuation = continuation;
         }
 
+        void wait() const
+        {
+            while (!m_ready.load(std::memory_order_acquire))
+            {
+                std::this_thread::yield();
+            }
+        }
+
     private:
         void notify_continuation()
         {
             if (m_continuation)
             {
                 m_continuation.resume();
-            }
-        }
-
-        void wait() const
-        {
-            while (!m_ready.load(std::memory_order_acquire))
-            {
-                std::this_thread::yield();
             }
         }
 
@@ -113,6 +113,7 @@ namespace pot::coroutines
         std::coroutine_handle<> m_continuation;
 
     public:
+        std::atomic_flag m_is_resuming = ATOMIC_FLAG_INIT;
         basic_promise_type() : m_state(std::make_shared<tasks::details::shared_state<T>>()) {}
 
         void set_continuation(std::coroutine_handle<> continuation) noexcept
@@ -232,8 +233,13 @@ namespace pot::coroutines
 
         void await_suspend(std::coroutine_handle<> continuation) noexcept
         {
-            m_handle.promise().set_continuation(continuation);
-            m_handle.resume();
+            if (m_handle && !m_handle.done() && !m_handle.promise().m_is_resuming.test_and_set(std::memory_order_acquire))
+            {
+                std::cout << "!!!!!!!!!!!!!!!!!!!!!!!(await_suspend)" << std::endl;
+                m_handle.promise().set_continuation(continuation);
+                m_handle.resume();
+            }
+            m_handle.promise().m_is_resuming.clear(std::memory_order_release);
         }
 
         T await_resume()
@@ -243,10 +249,12 @@ namespace pot::coroutines
 
         T get()
         {
-            if (!m_handle.done())
+            if (m_handle && !m_handle.done() && !m_handle.promise().m_is_resuming.test_and_set(std::memory_order_acquire))
             {
+                std::cout << "!!!!!!!!!!!!!!!!!!!!!!!(get)" << std::endl;
                 m_handle.resume();
             }
+            m_handle.promise().m_is_resuming.clear(std::memory_order_release);
             return m_handle.promise().get_shared_state()->get();
         }
 
@@ -349,12 +357,11 @@ namespace pot::traits
 
     template <typename T>
     using awaitable_value_type_t = typename awaitable_value_type<T>::type;
-    
+
     namespace concepts
     {
         template <typename Type>
-        concept is_task = requires(Type t) 
-        {
+        concept is_task = requires(Type t) {
             typename task_value_type_t<std::remove_cvref_t<Type>>;
         };
     }
