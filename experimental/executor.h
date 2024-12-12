@@ -46,17 +46,16 @@ namespace pot
             if constexpr (pot::traits::concepts::is_task<return_type>)
             {
                 auto task_result = std::invoke(func, args...);
-
                 auto handle = task_result.operator co_await().m_handle;
+                auto handle_is_busy = handle.promise().m_is_resuming.test_and_set(std::memory_order_acquire);
 
-                derived_execute([&]() mutable
+                derived_execute([handle, handle_is_busy]() mutable
                 {
-                    if (handle && !handle.done() && !handle.promise().m_is_resuming.test_and_set(std::memory_order_acquire))
+                    if (handle && !handle.done() && !handle_is_busy)
                     {
-                        std::cout << "!!!!!!!!!!!!!!!!!!!!!!!(de)" << std::endl;
                         handle.resume();
-                        handle.promise().m_is_resuming.clear(std::memory_order_release);
                     } 
+                    handle.promise().m_is_resuming.clear(std::memory_order_release); 
                 });
 
                 return task_result;

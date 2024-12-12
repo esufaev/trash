@@ -3,7 +3,8 @@
 #include <thread>
 #include <chrono>
 #include <cassert>
-#include "thread_pool_executor.h"
+
+#include "parfor.h"
 
 using namespace pot::executors;
 
@@ -37,18 +38,8 @@ int main()
 {
     thread_pool_executor<true> executor("GlobalQueueExecutor", 4);
 
-    auto result_task_1 = executor.run([]()
-                                      { return async_computation(20); });
-
-    // auto result_task_2 = executor.run([]()
-    //                                   { return async_computation_2(20); });
-    int result1 = result_task_1.get();
-    // int result2 = result_task_2.get();
-
-    std::cout << "Main thread: " << std::this_thread::get_id() << std::endl;
-
-    std::cout << "Result 1: " << result1 << std::endl;
-    // std::cout << "Result 2: " << result2 << std::endl;
+    pot::algorithms::parfor(executor, 0, 3, [&](const int i)
+                            { std::cout << "I: " << i << std::endl; });
 
     executor.shutdown();
     return 0;

@@ -70,6 +70,7 @@ namespace pot::tasks::details
             if constexpr (!std::is_void_v<T>)
             {
                 return std::get<T>(m_data);
+
             }
         }
 
@@ -80,7 +81,7 @@ namespace pot::tasks::details
 
         void wait() const
         {
-            while (!m_ready.load(std::memory_order_acquire))
+            while (!m_ready.load(std::memory_order_acquire) || !std::get_if<T>(&m_data))
             {
                 std::this_thread::yield();
             }
@@ -235,7 +236,6 @@ namespace pot::coroutines
         {
             if (m_handle && !m_handle.done() && !m_handle.promise().m_is_resuming.test_and_set(std::memory_order_acquire))
             {
-                std::cout << "!!!!!!!!!!!!!!!!!!!!!!!(await_suspend)" << std::endl;
                 m_handle.promise().set_continuation(continuation);
                 m_handle.resume();
             }
@@ -251,7 +251,6 @@ namespace pot::coroutines
         {
             if (m_handle && !m_handle.done() && !m_handle.promise().m_is_resuming.test_and_set(std::memory_order_acquire))
             {
-                std::cout << "!!!!!!!!!!!!!!!!!!!!!!!(get)" << std::endl;
                 m_handle.resume();
             }
             m_handle.promise().m_is_resuming.clear(std::memory_order_release);
