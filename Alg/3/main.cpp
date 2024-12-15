@@ -69,6 +69,12 @@ void quick_sort(std::vector<int> &data, int low, int high)
     }
 }
 
+void quick_sort_wrapper(std::vector<int> &data)
+{
+    if (!data.empty())
+        quick_sort(data, 0, static_cast<int>(data.size()) - 1);
+}
+
 void merge_sort(std::vector<int> &data)
 {
     if (data.size() <= 1)
@@ -123,16 +129,6 @@ void heap_sort(std::vector<int> &data)
     }
 }
 
-template <typename SortFunction>
-double measure_sort_time(SortFunction sort_func, std::vector<int> data)
-{
-    auto start = std::chrono::high_resolution_clock::now();
-    sort_func(data);
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
-    return elapsed.count();
-}
-
 void bucket_sort(std::vector<int> &data)
 {
     if (data.empty())
@@ -153,16 +149,21 @@ void bucket_sort(std::vector<int> &data)
     data.clear();
     for (auto &bucket : buckets)
     {
-        std::sort(bucket.begin(), bucket.end()); 
+        std::sort(bucket.begin(), bucket.end());
         data.insert(data.end(), bucket.begin(), bucket.end());
     }
 }
 
-void quick_sort_wrapper(std::vector<int> &data)
+template <typename SortFunction>
+double measure_sort_time(SortFunction sort_func, std::vector<int> data)
 {
-    if (!data.empty())
-        quick_sort(data, 0, static_cast<int>(data.size()) - 1);
+    auto start = std::chrono::high_resolution_clock::now();
+    sort_func(data);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    return elapsed.count();
 }
+
 
 int main()
 {
@@ -171,14 +172,15 @@ int main()
 
     auto data = generate_random_data(data_size, min_val, max_val);
 
-    std::vector<std::pair<std::string, std::function<void(std::vector<int> &)>>> sort_algorithms = {
-        {"Bubble Sort", bubble_sort},
-        {"Insertion Sort", insertion_sort},
-        {"Heap Sort", heap_sort},
-        {"Merge Sort", merge_sort},
-        {"Quick Sort", quick_sort_wrapper},
-        {"Bucket Sort", bucket_sort},
-    };
+    std::vector<std::pair<std::string, std::function<void(std::vector<int> &)>>> sort_algorithms =
+        {
+            {"Bubble Sort", bubble_sort},
+            {"Insertion Sort", insertion_sort},
+            {"Quick Sort", quick_sort_wrapper},
+            {"Heap Sort", heap_sort},
+            {"Merge Sort", merge_sort},
+            {"Bucket Sort", bucket_sort}
+        };
 
     for (const auto &[name, sort_func] : sort_algorithms)
     {
