@@ -1,9 +1,11 @@
-package cor1_intro
+package cor2
 
 import kotlinx.coroutines.*
 
 suspend fun main() = coroutineScope<Unit> {
-    printHello()
+    launch {
+        printHello()
+    }
     println("Program has finished")
 }
 
