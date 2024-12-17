@@ -1,3 +1,25 @@
+CREATE OR REPLACE FUNCTION generate_random_string()
+RETURNS VARCHAR(5) AS $$
+DECLARE
+    result VARCHAR(5);
+BEGIN
+    SELECT string_agg(
+        chr(
+            CASE floor(random() * 3)::INT
+                WHEN 0 THEN 48 + floor(random() * 10)::INT  -- Генерация 0-9
+                WHEN 1 THEN 65 + floor(random() * 26)::INT  -- Генерация A-Z
+                ELSE 97 + floor(random() * 26)::INT        -- Генерация a-z
+            END
+        ),
+        ''
+    ) INTO result
+    FROM generate_series(1, 5); -- Генерируем 5 символов
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+
 -- Поставка (Supply)
 CREATE TABLE Поставка (
     id_поставки VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
@@ -75,24 +97,6 @@ ADD COLUMN id_заказа INT REFERENCES Заказ(id_заказа);
 ALTER TABLE Поставка
 ADD COLUMN id_филиала INT REFERENCES Филиал_магазина(id_филиала);
 
-CREATE OR REPLACE FUNCTION generate_random_string()
-RETURNS VARCHAR(5) AS $$
-DECLARE
-    result VARCHAR(5);
-BEGIN
-    SELECT string_agg(
-        chr(
-            CASE floor(random() * 3)::INT
-                WHEN 0 THEN 48 + floor(random() * 10)::INT  -- Генерация 0-9
-                WHEN 1 THEN 65 + floor(random() * 26)::INT  -- Генерация A-Z
-                ELSE 97 + floor(random() * 26)::INT        -- Генерация a-z
-            END
-        ),
-        ''
-    ) INTO result
-    FROM generate_series(1, 5); -- Генерируем 5 символов
 
-    RETURN result;
-END;
-$$ LANGUAGE plpgsql;
 
+SELECT generate_random_string(); --тест
