@@ -20,83 +20,70 @@ END;
 $$ LANGUAGE plpgsql;
 
 
--- Поставка (Supply)
-CREATE TABLE Поставка (
-    id_поставки VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    дата DATE
+CREATE TABLE customer (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
+    surname VARCHAR(50),
+    name VARCHAR(50),
+    patronymic VARCHAR(50)
 );
 
--- Поставщики (Suppliers)
-CREATE TABLE Поставщики (
-    id_поставщика VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    id_поставки INT REFERENCES Поставка(id_поставки),
-    номер_телефона VARCHAR(100)
+CREATE TABLE car (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
+    plate VARCHAR(50),
+    model VARCHAR(50)
 );
 
--- Товар (Goods)
-CREATE TABLE Товар (
-    id_товара VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    название VARCHAR(100),
-    цена INTEGER
+CREATE TABLE courier (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
+    surname VARCHAR(50),
+    name VARCHAR(50),
+    patronymic VARCHAR(50),
+    car_id VARCHAR(5) REFERENCES car(id)
 );
 
 -- Завод (Factory)
-CREATE TABLE Завод (
-    id_завода VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    id_поставщика INT REFERENCES Поставщики(id_поставщика)
+CREATE TABLE factory (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string())
+
 );
 
--- Добавляем внешний ключ для Товар после создания Завод
-ALTER TABLE Товар
-ADD COLUMN id_завода INT REFERENCES Завод(id_завода);
-
--- Покупатели (Customers)
-CREATE TABLE Покупатели (
-    id_покупателя VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    фамилия VARCHAR(50),
-    имя VARCHAR(50),
-    отчество VARCHAR(50)
-);
-
--- Авто (Transport)
-CREATE TABLE Авто (
-    id_машины VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    номер VARCHAR(50),
-    марка VARCHAR(50)
-);
-
--- Курьеры (Couriers)
-CREATE TABLE Курьеры (
-    id_курьера VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    фамилия VARCHAR(50),
-    имя VARCHAR(50),
-    отчество VARCHAR(50),
-    id_машины INT REFERENCES Авто(id_машины)
-);
-
--- Филиал_магазина (Store Branch)
-CREATE TABLE Филиал_магазина (
-    id_филиала VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    название VARCHAR(100)
+-- Товар (Goods)
+CREATE TABLE goods (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
+    factory_id varchar(5) references factory(id),
+    name VARCHAR(100),
+    price INTEGER
 );
 
 -- Заказ (Order)
-CREATE TABLE Заказ (
-    id_заказа VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
-    id_покупателя INT REFERENCES Покупатели(id_покупателя),
-    id_товара INT REFERENCES Товар(id_товара),
-    дата VARCHAR(11),
-    id_курьера INT REFERENCES Курьеры(id_курьера)
+CREATE TABLE order (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
+    customer_id VARCHAR(5) REFERENCES customer(id),
+    goods_id VARCHAR(5) REFERENCES goods(id),
+    order_date VARCHAR(11),
+    courier_id VARCHAR(5) REFERENCES courier(id)
 );
 
--- Добавляем внешний ключ в Филиал_магазина после создания Заказ
-ALTER TABLE Филиал_магазина
-ADD COLUMN id_заказа INT REFERENCES Заказ(id_заказа);
+CREATE TABLE store_branch (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
+    order_id varchar(5) REFERENCES order(id),
+    name VARCHAR(100)
+);
+-- Поставка (Supply)
+CREATE TABLE supply (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
+    store_branch_id varchar(5) REFERENCES store_branch(id),
+    date varchar(11)
+);
 
--- Добавляем внешний ключ в Поставка после создания Филиал_магазина
-ALTER TABLE Поставка
-ADD COLUMN id_филиала INT REFERENCES Филиал_магазина(id_филиала);
+CREATE TABLE suppliers (
+    id VARCHAR(5) PRIMARY KEY DEFAULT(generate_random_string()),
+    supply_id VARCHAR(5) REFERENCES supply(id),
+    phone_number VARCHAR(100)
+);
 
-
+ALTER TABLE factory
+add column suppliers_id VARCHAR(5) REFERENCES suppliers(id);
 
 SELECT generate_random_string(); --тест
+INSERT INTO goods values (default ,default , 'Молоко' , 1234)
