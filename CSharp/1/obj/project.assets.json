@@ -8,19 +8,19 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Анатолий\\.nuget\\packages\\": {}
+    "/Users/user/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Анатолий\\Desktop\\CSTasks\\CSTasks\\CSTasks.csproj",
+      "projectUniqueName": "/Users/user/RiderProjects/trash/CSharp/1/CSTasks.csproj",
       "projectName": "CSTasks",
-      "projectPath": "C:\\Users\\Анатолий\\Desktop\\CSTasks\\CSTasks\\CSTasks.csproj",
-      "packagesPath": "C:\\Users\\Анатолий\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Анатолий\\Desktop\\CSTasks\\CSTasks\\obj\\",
+      "projectPath": "/Users/user/RiderProjects/trash/CSharp/1/CSTasks.csproj",
+      "packagesPath": "/Users/user/.nuget/packages/",
+      "outputPath": "/Users/user/RiderProjects/trash/CSharp/1/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Анатолий\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/user/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -42,7 +42,7 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
+        "auditMode": "direct"
       },
       "SdkAnalysisLevel": "9.0.100"
     },
@@ -65,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
