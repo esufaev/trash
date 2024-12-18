@@ -1,0 +1,29 @@
+﻿@page "/counter"
+@using BlazorApp1.Entity
+@rendermode InteractiveServer
+@inject MyContext context
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Goods</h1>
+<input type="text" class="form-control" name="Plate" @bind="Plate"/>
+<input type="text" class="form-control" name="Model" @bind="Model"/>
+
+<button class="btn btn-primary" @onclick="AddCar">Save</button>
+
+@code {
+    private string Model { get; set; }
+    private string Plate { get; set; }
+
+    private async Task AddCar()
+    {
+        await context.Car.AddAsync(new Car()
+        {
+            Plate = Plate,
+            Model = Model
+        });
+
+        await context.SaveChangesAsync();
+    } 
+
+}
